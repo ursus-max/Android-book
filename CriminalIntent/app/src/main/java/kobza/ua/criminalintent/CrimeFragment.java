@@ -1,5 +1,6 @@
 package kobza.ua.criminalintent;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,8 @@ public class CrimeFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
     public static final String EXTRA_CRIME_ID = "ua.kobza.criminalintent.crime_id";
+    public static final String DIALOG_DATE = "date";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,15 @@ public class CrimeFragment extends Fragment {
 //        Задание кнопки с датой
         mDateButton = (Button)v.findViewById(R.id.crime_date);
         mDateButton.setText(mCrime.getDate().toString());
-        mDateButton.setEnabled(false);
+        mDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.support.v4.app.FragmentManager fm = getActivity().getSupportFragmentManager();
+                DatePickerFragment dialog =  DatePickerFragment
+                        .newInstance(mCrime.getDate());
+                dialog.show(fm, DIALOG_DATE);
+            }
+        });
 
 // Задание чекбокса
         mSolvedCheckBox = (CheckBox)v.findViewById(R.id.crime_solved);
